@@ -1,9 +1,6 @@
 package dev.ajay.productservice.models;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,7 +14,12 @@ public class Product extends BaseModel{
     private  String description;
     private  String imageUrl;
     private double price;
-    @ManyToOne(cascade= CascadeType.PERSIST)
+
+    @ManyToOne()
+    @JoinColumn(name = "category")
     private Category category;
+
+    @OneToOne
+    private  Value value;
 
 }
