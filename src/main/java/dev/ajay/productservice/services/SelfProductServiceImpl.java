@@ -3,10 +3,12 @@ package dev.ajay.productservice.services;
 import dev.ajay.productservice.dto.ProductDto;
 import dev.ajay.productservice.exception.NoDatafoundException;
 import dev.ajay.productservice.exception.NotFoundException;
+import dev.ajay.productservice.models.Category;
 import dev.ajay.productservice.models.Product;
 import dev.ajay.productservice.repository.CategoryRepository;
 import dev.ajay.productservice.repository.ProductRepository;
 import org.springframework.context.annotation.Primary;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -73,8 +75,15 @@ public class SelfProductServiceImpl implements ProductService {
 
 
     @Override
-    public void deleteById(UUID uuid) {
-        productRepository.deleteById(uuid);
+    public String deleteById(UUID uuid) throws NotFoundException {
+        try {
+            productRepository.deleteById(uuid);
+        } catch (Exception e){
+            throw new NotFoundException("UUID not found in Db");
+        }
+
+        return "product is deleted";
+
 
     }
 
@@ -89,10 +98,15 @@ public class SelfProductServiceImpl implements ProductService {
 
         Product updateproduct = new Product();
 
+
         updateproduct.setUuid(uuid);
 
-        if (product.getCategory() != null) {
-            updateproduct.setCategory(product.getCategory());
+        if (!(product.getCategory().getName().equalsIgnoreCase(optionalProduct.get().getCategory().getName())) ) {
+//
+            Category savedCategory=  categoryRepository.save(product.getCategory());
+            updateproduct.setCategory(savedCategory);
+        }else {
+            updateproduct.setCategory(optionalProduct.get().getCategory());
         }
 
         if (product.getTitle() != null) {

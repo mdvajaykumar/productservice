@@ -17,10 +17,9 @@ public class ProductController {
     ProductService productServiceCreate;
 
 
-    public ProductController(ProductService productServiceCreate){
-        this.productServiceCreate =productServiceCreate;
+    public ProductController(ProductService productServiceCreate) {
+        this.productServiceCreate = productServiceCreate;
     }
-
 
 
     @PostMapping
@@ -31,25 +30,25 @@ public class ProductController {
 
     @GetMapping("/{uuid}")
     public ProductDto getProductById(@PathVariable("uuid") UUID uuid) throws NotFoundException {
-        return  productServiceCreate.getProductById(uuid);
+        return productServiceCreate.getProductById(uuid);
     }
 
 
     @GetMapping("/getAll")
-    public List<ProductDto> getAllProducts(){
+    public List<ProductDto> getAllProducts() {
         return productServiceCreate.getAllProducts();
     }
 
 
     @PutMapping("/{uuid}")
     public ProductDto updateProduct(@PathVariable UUID uuid, @RequestBody Product product) throws NotFoundException {
-       return  productServiceCreate.updateProduct(uuid, product);
+        return productServiceCreate.updateProduct(uuid, product);
     }
 
 
     @DeleteMapping("/{uuid}")
-    public void deleteById(@PathVariable("uuid") UUID uuid){
-      productServiceCreate.deleteById(uuid);
+    public String deleteById(@PathVariable("uuid") UUID uuid) throws NotFoundException {
+        return productServiceCreate.deleteById(uuid);
     }
 
 }

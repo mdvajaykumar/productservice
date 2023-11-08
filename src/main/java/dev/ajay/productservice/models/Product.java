@@ -15,11 +15,11 @@ public class Product extends BaseModel{
     private  String imageUrl;
     private double price;
 
-    @ManyToOne()
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "category")
     private Category category;
 
-    @OneToOne
-    private  Value value;
+//    @OneToOne
+//    private  Value value;
 
 }
